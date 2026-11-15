@@ -1,13 +1,10 @@
+#include <fcntl.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/fcntl.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <unistd.h>
-
-#define O_PERMS O_RDWR
-#define S_PERMS S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH
 
 #define SHM_FD "shmtest"
 
@@ -21,7 +18,7 @@ int main(void) {
 
     char *test_msg = "hello world!";
 
-    int fd = shm_open(SHM_FD, O_PERMS | O_CREAT, S_PERMS);
+    int fd = shm_open(SHM_FD, O_RDWR | O_CREAT, 0666);
     if (fd < 0) {
         perror("shm open error");
     }
