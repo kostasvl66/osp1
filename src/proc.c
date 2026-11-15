@@ -1,25 +1,18 @@
 #include <fcntl.h>
 #include <stdio.h>
+#include <string.h>
+#include <sys/fcntl.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
-
-#define O_PERMS O_CREAT | O_RDWR
-#define S_PERMS S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH
+#include <unistd.h>
 
 #define SHM_FD "shmtest"
 
 int main(void) {
     printf("Starting main\n");
 
-    char *msg = "testing";
-
-    // Opening shared memory descriptor
-    int fd = shm_open(SHM_FD, O_PERMS, S_PERMS);
-    if (fd < 0) {
-        printf("shm_open failure\n");
-    }
-
-    shm_unlink(SHM_FD);
+    // TODO: Implement Reader/Writer thread functinality, with RW-lock
+    // Implement semaphores for mapping P1's writer to P2's reader, and the opposite
 
     return 0;
 }
