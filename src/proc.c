@@ -1,3 +1,4 @@
+#include "../lib/msglib.h"
 #include <fcntl.h>
 #include <pthread.h>
 #include <semaphore.h>
@@ -9,22 +10,17 @@
 #include <unistd.h>
 #include <wait.h>
 
-#define SHM_FD "shmtest"
-
-typedef struct message {
-    char text[256];
-    int id;
-} *Message;
-
 // TODO: Implement Reader/Writer thread functinality, with RW-lock
 // Implement semaphores for mapping P1's writer to P2's reader, and the opposite
 
 void *write_routine(void *arg) {
     Message tosend = (Message)arg;
     int i = 0;
+    char *st;
     while (strcmp(tosend->text, "TERM") && (i < 5)) {
-        printf("Writer: Not terminating\n");
-        i++;
+        scanf("%s", st);
+        printf("Writer: Wrote: %s\n", st);
+        // i++;
     }
     printf("Writer: Terminating\n");
 
@@ -34,7 +30,12 @@ void *write_routine(void *arg) {
 void *read_routine(void *arg) {
 
     Message sent = (Message)arg;
-    printf("Reader: Message text is: %s with id: %d\n", sent->text, sent->id);
+    int i = 0;
+    while (strcmp(sent->text, "TERM") && (i < 5)) {
+        printf("Reader: Message text is: %s with id: %d\n", sent->text, sent->id);
+        // i++;
+    }
+    printf("Reader: Terminating\n");
 
     return NULL;
 }
@@ -48,12 +49,12 @@ int main(void) {
     int fd = shm_open(SHM_FD, O_RDWR, 0666);
     Message msg = mmap(NULL, sizeof(*msg), PROT_WRITE | PROT_READ, MAP_SHARED, fd, 0);
 
-    // Start reader thread
+    // Start reader/writer threads
     pthread_create(&thread_handle[1], NULL, read_routine, (void *)msg);
-    pthread_join(thread_handle[1], NULL);
-
-    // Start writer thread
     pthread_create(&thread_handle[0], NULL, write_routine, (void *)msg);
+
+    // Join reader/writer threads
+    pthread_join(thread_handle[1], NULL);
     pthread_join(thread_handle[0], NULL);
 
     munmap(msg, sizeof(*msg));

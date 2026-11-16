@@ -1,3 +1,4 @@
+#include "../lib/msglib.h"
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
@@ -5,13 +6,6 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <unistd.h>
-
-#define SHM_FD "shmtest"
-
-typedef struct message {
-    char text[256];
-    int id;
-} *Message;
 
 int main(void) {
     printf("Writer Process:");
