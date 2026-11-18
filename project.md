@@ -12,11 +12,16 @@ CLI launch: ./proc 1 ./proc 2 --- AFTER ./start
 
   - Connections between processes must be implemented using shared memory(in/out structures), while also using semaphores for synchronisation.
 
-- Global Values:
+- Global Items:
 
   - p: Probability-value used for encoding/decoding every character in a message, by ENC1/2.
 
   - N: Number of times a message is allowed to fail being sent from P1/2 to P2/1.
+
+  - Named Semaphores:
+    - Full: Specifies if the message buffer is full(message has not been read)
+    - Empty: Specifies if the message buffer is empty(message has been read)
+  - Access Mutex: Makes sure only one process can access a given semaphore at a time
 
 - P1/P2: Multi-User(Process) Input/Output
 
