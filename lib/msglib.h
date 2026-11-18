@@ -10,8 +10,8 @@
 #include <wait.h>
 
 #define SHM_FD "shmtest"
-#define RD_SEM_NAME "/rdsem"
-#define WR_SEM_NAME "/wrsem"
+#define SEM_EMPT "/esem"
+#define SEM_FULL "/fsem"
 
 typedef struct message {
     char text[256];
