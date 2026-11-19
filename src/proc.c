@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/fcntl.h>
 #include <sys/mman.h>
@@ -40,8 +41,16 @@ void *read_routine(void *arg) {
     return NULL;
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
     printf("Starting main\n");
+
+    if (argc != 2) {
+        perror("Program must be called as ./proc <instance>");
+        return 1;
+    }
+
+    int program_instance = atoi(argv[1]);
+
     pthread_t thread_handle[2];
     int x = 0;
 
