@@ -16,13 +16,16 @@
 
 void *write_routine(void *arg) {
     Message tosend = (Message)arg;
-    int i = 0;
-    char *st;
-    while (strcmp(tosend->text, "TERM") && (i < 5)) {
-        scanf("%s", st);
-        printf("Writer: Wrote: %s\n", st);
-        // i++;
-    }
+    // int i = 0;
+    // char *st;
+    // while (strcmp(tosend->text, "TERM") && (i < 5)) {
+    //     scanf("%s", st);
+    //     printf("Writer: Wrote: %s\n", st);
+    //     // i++;
+    // }
+
+    strcpy(tosend->text, "Writer writes writingly");
+
     printf("Writer: Terminating\n");
 
     return NULL;
@@ -31,11 +34,11 @@ void *write_routine(void *arg) {
 void *read_routine(void *arg) {
 
     Message sent = (Message)arg;
-    int i = 0;
-    while (strcmp(sent->text, "TERM") && (i < 5)) {
-        printf("Reader: Message text is: %s with id: %d\n", sent->text, sent->id);
-        // i++;
-    }
+    // int i = 0;
+    // while (strcmp(sent->text, "TERM") && (i < 5)) {
+    //     printf("Reader: Message text is: %s with id: %d\n", sent->text, sent->id);
+    //     // i++;
+    // }
     printf("Reader: Terminating\n");
 
     return NULL;
@@ -66,7 +69,7 @@ int main(int argc, char *argv[]) {
     pthread_join(thread_handle[1], NULL);
     pthread_join(thread_handle[0], NULL);
 
-    munmap(msg, sizeof(*msg));
-    shm_unlink(SHM_FD);
+    // munmap(msg, sizeof(*msg));
+    // shm_unlink(SHM_FD);
     return 0;
 }
