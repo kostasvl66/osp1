@@ -24,3 +24,9 @@ typedef struct message {
     sem_t out_sem;
     int id;
 } *Message;
+
+int msg_Init(Message msg);
+
+int msg_Open(Message msg);
+
+int msg_Destroy(Message msg);
