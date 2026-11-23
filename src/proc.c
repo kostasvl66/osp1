@@ -64,9 +64,11 @@ int main(int argc, char *argv[]) {
     Message msg = mmap(NULL, sizeof(*msg), PROT_WRITE | PROT_READ, MAP_SHARED, fd, 0);
     close(fd);
 
-    int p1fd = shm_open(SHM_PENC1, O_RDWR, 0666);
-    Message p1mesg = mmap(NULL, sizeof(*p1mesg), PROT_WRITE | PROT_READ, MAP_SHARED, p1fd, 0);
-    close(p1fd);
+    // int p1fd = shm_open(SHM_PENC1, O_RDWR, 0666);
+    // Message p1mesg = mmap(NULL, sizeof(*p1mesg), PROT_WRITE | PROT_READ, MAP_SHARED, p1fd, 0);
+    // close(p1fd);
+
+    Message p1mesg = msg_Open(SHM_PENC1);
 
     // Start reader/writer threads
     pthread_create(&thread_handle[1], NULL, read_routine, (void *)msg);

@@ -40,12 +40,13 @@ int main(void) {
 
     munmap(msg, sizeof(*msg));
 
-    int p1fd = shm_open(SHM_PENC1, O_CREAT | O_RDWR, 0666);
-    ftruncate(p1fd, sizeof(struct message));
-    Message p1mesg = mmap(NULL, sizeof(*p1mesg), PROT_WRITE | PROT_READ, MAP_SHARED, p1fd, 0);
-    close(p1fd);
+    // int p1fd = shm_open(SHM_PENC1, O_CREAT | O_RDWR, 0666);
+    // ftruncate(p1fd, sizeof(struct message));
+    // Message p1mesg = mmap(NULL, sizeof(*p1mesg), PROT_WRITE | PROT_READ, MAP_SHARED, p1fd, 0);
+    // close(p1fd);
 
-    // TODO: Initialize ENC1 and ENC2 using 2 parallel threads
+    Message p1mesg = msg_Init(SHM_PENC1);
+
     pthread_t thread_handle[2];
     int enc_inst[2];
 
