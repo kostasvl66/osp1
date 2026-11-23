@@ -25,7 +25,6 @@ void *write_routine(void *arg) {
     //     // i++;
     // }
 
-    // msg_Send("Writer writes writingly", &tosend->in_text);
     msg_Send("Writer writes from p1 to enc1 writingly", &tosend->in_text);
 
     printf("Writer: Terminating\n");
@@ -60,18 +59,11 @@ int main(int argc, char *argv[]) {
     int x = 0;
 
     // Initializing shared memory
-    int fd = shm_open(SHM_FD, O_RDWR, 0666);
-    Message msg = mmap(NULL, sizeof(*msg), PROT_WRITE | PROT_READ, MAP_SHARED, fd, 0);
-    close(fd);
-
-    // int p1fd = shm_open(SHM_PENC1, O_RDWR, 0666);
-    // Message p1mesg = mmap(NULL, sizeof(*p1mesg), PROT_WRITE | PROT_READ, MAP_SHARED, p1fd, 0);
-    // close(p1fd);
 
     Message p1mesg = msg_Open(SHM_PENC1);
 
     // Start reader/writer threads
-    pthread_create(&thread_handle[1], NULL, read_routine, (void *)msg);
+    pthread_create(&thread_handle[1], NULL, read_routine, (void *)p1mesg);
     pthread_create(&thread_handle[0], NULL, write_routine, (void *)p1mesg);
 
     // Join reader/writer threads

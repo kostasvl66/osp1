@@ -31,21 +31,8 @@ void *init_enc(void *arg) {
 
 int main(void) {
 
-    int fd = shm_open(SHM_FD, O_CREAT | O_RDWR, 0666);
-    ftruncate(fd, sizeof(struct message));
-    Message msg = mmap(NULL, sizeof(*msg), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-
-    strcpy(msg->text, "[Initialization Message]");
-    msg->id = 114;
-
-    munmap(msg, sizeof(*msg));
-
-    // int p1fd = shm_open(SHM_PENC1, O_CREAT | O_RDWR, 0666);
-    // ftruncate(p1fd, sizeof(struct message));
-    // Message p1mesg = mmap(NULL, sizeof(*p1mesg), PROT_WRITE | PROT_READ, MAP_SHARED, p1fd, 0);
-    // close(p1fd);
-
     Message p1mesg = msg_Init(SHM_PENC1);
+    munmap(p1mesg, sizeof(*p1mesg));
 
     pthread_t thread_handle[2];
     int enc_inst[2];
