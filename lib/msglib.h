@@ -36,9 +36,9 @@ typedef struct message {
     int id;
 } *Message;
 
-int msg_Init(Message msg, char shm_fd[]);
+Message msg_Init(char shm_fd[]);
 
-int msg_Open(Message msg, char shm_fd[]);
+Message msg_Open(char shm_fd[]);
 
 int msg_Send(char *text, Text buff);
 

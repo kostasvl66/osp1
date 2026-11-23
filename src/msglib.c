@@ -3,21 +3,21 @@
 #include <semaphore.h>
 #include <string.h>
 
-int msg_Init(Message msg, char shm_fd[]) {
+Message msg_Init(char shm_fd[]) {
     int fd = shm_open(shm_fd, O_RDWR, 0666);
     ftruncate(fd, sizeof(struct message));
-    msg = mmap(NULL, sizeof(*msg), PROT_WRITE | PROT_READ, MAP_SHARED, fd, 0);
+    Message msg = mmap(NULL, sizeof(*msg), PROT_WRITE | PROT_READ, MAP_SHARED, fd, 0);
     close(fd);
 
-    return 0;
+    return msg;
 }
 
-int msg_Open(Message msg, char shm_fd[]) {
+Message msg_Open(char shm_fd[]) {
     int fd = shm_open(shm_fd, O_RDWR, 0666);
-    msg = mmap(NULL, sizeof(*msg), PROT_WRITE | PROT_READ, MAP_SHARED, fd, 0);
+    Message msg = mmap(NULL, sizeof(*msg), PROT_WRITE | PROT_READ, MAP_SHARED, fd, 0);
     close(fd);
 
-    return 0;
+    return msg;
 }
 
 int msg_Send(char *text, Text buff) {
