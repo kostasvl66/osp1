@@ -16,19 +16,32 @@
 #define SHM_ENC2CH "enc2ch_shm"
 
 // TODO: Add in/out functionality to struct for more organized IPC
+
+typedef struct text_buffer {
+    char buf[256];
+    sem_t buf_empt;
+    sem_t buf_full;
+} *Text;
+
 typedef struct message {
     char text[256]; // HACK: Needs to be removed later, kept only for debugging
-    char in[256];
-    sem_t in_empt;
-    sem_t in_full;
-    char out[256];
-    sem_t out_empt;
-    sem_t out_full;
+    struct text_buffer in_text;
+    char in[256];  // HACK: remove
+    sem_t in_empt; // HACK: remove
+    sem_t in_full; // HACK: remove
+    struct text_buffer out_text;
+    char out[256];  // HACK: remove
+    sem_t out_empt; // HACK: remove
+    sem_t out_full; // HACK: remove
     int id;
 } *Message;
 
 int msg_Init(Message msg, char shm_fd[]);
 
 int msg_Open(Message msg, char shm_fd[]);
+
+int msg_Send(char *text, Text buff);
+
+int msg_Recv(char *text, Text buff);
 
 int msg_Destroy(Message msg, char shm_fd[]);
