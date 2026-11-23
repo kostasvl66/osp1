@@ -15,6 +15,7 @@
 // Implement semaphores for mapping P1's writer to P2's reader, and the opposite
 
 void *write_routine(void *arg) {
+    printf("Entering writer\n");
     Message tosend = (Message)arg;
     // int i = 0;
     // char *st;
@@ -24,7 +25,8 @@ void *write_routine(void *arg) {
     //     // i++;
     // }
 
-    strcpy(tosend->text, "Writer writes writingly");
+    // msg_Send("Writer writes writingly", &tosend->in_text);
+    msg_Send("Writer writes from p1 to enc1 writingly", &tosend->in_text);
 
     printf("Writer: Terminating\n");
 
@@ -60,10 +62,15 @@ int main(int argc, char *argv[]) {
     // Initializing shared memory
     int fd = shm_open(SHM_FD, O_RDWR, 0666);
     Message msg = mmap(NULL, sizeof(*msg), PROT_WRITE | PROT_READ, MAP_SHARED, fd, 0);
+    close(fd);
+
+    int p1fd = shm_open(SHM_PENC1, O_RDWR, 0666);
+    Message p1mesg = mmap(NULL, sizeof(*p1mesg), PROT_WRITE | PROT_READ, MAP_SHARED, p1fd, 0);
+    close(p1fd);
 
     // Start reader/writer threads
     pthread_create(&thread_handle[1], NULL, read_routine, (void *)msg);
-    pthread_create(&thread_handle[0], NULL, write_routine, (void *)msg);
+    pthread_create(&thread_handle[0], NULL, write_routine, (void *)p1mesg);
 
     // Join reader/writer threads
     pthread_join(thread_handle[1], NULL);
