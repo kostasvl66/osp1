@@ -19,14 +19,16 @@
 typedef struct message {
     char text[256]; // HACK: Needs to be removed later, kept only for debugging
     char in[256];
+    sem_t in_empt;
+    sem_t in_full;
     char out[256];
-    sem_t in_sem;
-    sem_t out_sem;
+    sem_t out_empt;
+    sem_t out_full;
     int id;
 } *Message;
 
-int msg_Init(Message msg);
+int msg_Init(Message msg, char shm_fd[]);
 
-int msg_Open(Message msg);
+int msg_Open(Message msg, char shm_fd[]);
 
-int msg_Destroy(Message msg);
+int msg_Destroy(Message msg, char shm_fd[]);
